@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        .day-number,
+        .day-name {
+            width: 20px;
+            text-align: center;
+        }
+
+        .table-header {
+            width: 300px;
+        }
+
+        tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        tbody tr td:first-child {
+            text-align: left;
+        }
+
+        tbody tr td:last-child,
+        tbody tr td:first-child {
+            border-right: 1px solid black;
+        }
+
+        .holiday-header {
+            color: crimson;
+            font-weight: bold;
+        }
+
+        .holiday-cell {
+            color: crimson;
+        }
+
+        .saturday-cell {
+            border-left: 1px solid black;
+        }
+
+        .sunday-cell {
+            border-right: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <table rules="col row">
+        <thead>
+            <tr>
+                <td class="table-header">Días</td>
+                {{#each days as | day |}}
+                <td class="day-name {{#if day.isHoliday}}holiday-header{{/if}}">{{day.name}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td class="table-header">Trabajadores</td>
+                {{#each days as | day |}}
+                <td class="day-number {{#if day.isHoliday}}holiday-header{{/if}}">{{day.num}}</td>
+                {{/each}}
+            </tr>
+        </thead>
+
+        <tbody>
+            {{!-- Using full month attendance on worker --}}
+            {{!-- More info has to be copied to each worker to further customize based on day --}}
+            {{#each workers as | worker | }}
+            <tr>
+                <td class="worker-name">
+                    {{worker.name}}
+                </td>
+                {{#each worker.monthAtt as | attendance |}}
+                <td>
+                    {{attendance.label}}
+                </td>
+                {{/each}}
+            </tr>
+            {{/each}}
+
+            {{!-- looking up looping days first  --}}
+            {{#each workers as | worker | }}
+            <tr>
+                <td class="worker-name">
+                    {{worker.name}}
+                </td>
+                {{#each ../days as |day|}}
+                <td class="{{#if day.isSaturday}}saturday-cell{{/if}} {{#if day.isSunday}}sunday-cell{{/if}}">
+                    {{#if day.isHoliday}}
+                    <span class="holiday-cell">F</span>
+                    {{else}}
+                    {{#with (lookup worker.attendance day.num) as |attendance|}}
+                    {{attendance.label}}
+                    {{/with}}
+                    {{/if}}
+                </td>
+                {{/each}}
+            </tr>
+            {{/each}}
+
+        </tbody>
+    </table>
+</body>
+
+</html>

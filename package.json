@@ -1,0 +1,15 @@
+{
+  "name": "handlebars-complex-template",
+  "version": "1.0.0",
+  "description": "Probando generar plantillas html con colecciones de elementos complejos",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "paltaconajo",
+  "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.7.6"
+  }
+}
